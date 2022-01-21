@@ -1,12 +1,8 @@
 const express = require('express');
-
-
-
 const apiPath = require("./routes/apiRoute");
 const htmlPath = require("./routes/htmlRoute");
 
 const PORT = 3001
-
 const app = express();
 
 //make front end available to back end
@@ -18,16 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(apiPath);
 app.use(htmlPath);
-
-
-
-
-
-
-
-
-
-
 
 app.listen(PORT, () => {
     console.log(`Now listening on port ${PORT}!`);
