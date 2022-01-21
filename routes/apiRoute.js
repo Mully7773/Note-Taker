@@ -1,5 +1,6 @@
 const express = require('express');
-const fs = require("fs");
+const { acceptsEncodings } = require('express/lib/request');
+const fs = require('fs');
 const unid = require('../helper/unid');
 
 // const notes = require("./db/db.json")
@@ -9,7 +10,7 @@ const app = express();
 
 
 app.get('/api/notes', (req, res) =>
- fs.readFile("db/db.json", 'utf8', (err, data) => {
+ fs.readFile('db/db.json', 'utf8', (err, data) => {
     if (err) throw err;
     const jsonNotes = JSON.parse(data)
     res.json(jsonNotes)  //save all notes as JSON
@@ -36,29 +37,58 @@ app.get('/api/notes', (req, res) =>
       fs.readFile('./db/db.json', 'utf8', (err, data) => {
          if (err) {
             console.log(err);
+            res.send("Error!")
+            .status(500);
+            
          } else {
             let parsedNotes = JSON.parse(data)
 
             parsedNotes.push(newNote);
          
          //also tried writeFile
-         fs.writeFileSync(
+         fs.writeFile(
             './db/db.json', JSON.stringify(parsedNotes, null, 4), "utf8",
-            (writeErr) => 
-               writeErr
-               ? console.error(writeErr)
-               : console.info("Successfully wrote note!")
+            (writeErr) => {
+            if (writeErr) {
+               res.status(500)
+               .send("Something went wrong!")
+            } else {
+               res.send("Successfully wrote note!")
+            }
+         }
          )
        }
       })
+   } else { res.send("Please fill in both fields!")
+   .status(400);
    }
  })
 
 
  app.delete('/api/notes/:id', (req, res) => {
-    const { id } = req.params;
-    res.send("Delete request called")
- })
+    const noteIndex = req.params.note_id;
+
+   //use filter to make new array to filter out any note with matching id note_id
+   // fs.readFile
+      //copy fs.readFile from above
+         
+      
+         //filter noteIndex.
+   
+
+         // fs.writeFile(
+         //    './db/db.json', JSON.stringify(parsedNotes, null, 4), "utf8",
+         //    (writeErr) => {
+         //    if (writeErr) {
+         //       res.status(500)
+         //       .send("Something went wrong!")
+         //    } else {
+         //       res.send("Successfully wrote note!")
+         //    }
+         // }
+      
+   }
+ )  
 //push to array
  //response with array
  //

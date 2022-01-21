@@ -4,24 +4,13 @@
         "text": "Test text"
     },
     {
-        "title": "Hello",
-        "text": "How's it going?"
+        "title": "Test",
+        "text": "test",
+        "note_id": "47bf"
     },
     {
-        "title": "Hello",
-        "text": "How's it going?"
-    },
-    {
-        "title": "Good evening",
-        "text": "Test "
-    },
-    {
-        "title": "Another Note",
-        "text": "Test"
-    },
-    {
-        "title": "Test 3",
-        "text": "Yet another test",
-        "note_id": "26d3"
+        "title": "another test",
+        "text": "test",
+        "note_id": "471c"
     }
 ]
