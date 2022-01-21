@@ -1,5 +1,7 @@
 const express = require('express');
 const fs = require("fs");
+const unid = require('../helper/unid');
+
 // const notes = require("./db/db.json")
 
 const app = express();
@@ -9,8 +11,8 @@ const app = express();
 app.get('/api/notes', (req, res) =>
  fs.readFile("db/db.json", 'utf8', (err, data) => {
     if (err) throw err;
-    const jsonData = JSON.parse(data)
-    res.json(jsonData)  //save all notes as JSON
+    const jsonNotes = JSON.parse(data)
+    res.json(jsonNotes)  //save all notes as JSON
 
     
  }));
@@ -28,6 +30,7 @@ app.get('/api/notes', (req, res) =>
       const newNote = {
          title,
          text,
+         note_id: unid(),
       };
       
       fs.readFile('./db/db.json', 'utf8', (err, data) => {
@@ -38,9 +41,9 @@ app.get('/api/notes', (req, res) =>
 
             parsedNotes.push(newNote);
          
-         
-         fs.writeFile(
-            './db/db.json', JSON.stringify(parsedNotes, null, 4),
+         //also tried writeFile
+         fs.writeFileSync(
+            './db/db.json', JSON.stringify(parsedNotes, null, 4), "utf8",
             (writeErr) => 
                writeErr
                ? console.error(writeErr)
@@ -49,6 +52,12 @@ app.get('/api/notes', (req, res) =>
        }
       })
    }
+ })
+
+
+ app.delete('/api/notes/:id', (req, res) => {
+    const { id } = req.params;
+    res.send("Delete request called")
  })
 //push to array
  //response with array
