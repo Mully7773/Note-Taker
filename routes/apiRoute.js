@@ -23,6 +23,8 @@ app.get('/api/notes', (req, res) =>
  app.post('/api/notes', (req, res) => {
    console.log(req.body.title);
    console.log(req.body.text);
+   
+   
    // const noteTitle = req.body.title
    // const noteText = req.body.text
    const { title, text } = req.body;
@@ -31,7 +33,7 @@ app.get('/api/notes', (req, res) =>
       const newNote = {
          title,
          text,
-         note_id: unid(),
+         id: unid(),
       };
       
       fs.readFile('./db/db.json', 'utf8', (err, data) => {
@@ -45,7 +47,7 @@ app.get('/api/notes', (req, res) =>
 
             parsedNotes.push(newNote);
          
-         //also tried writeFile
+         
          fs.writeFile(
             './db/db.json', JSON.stringify(parsedNotes, null, 4), "utf8",
             (writeErr) => {
@@ -66,7 +68,24 @@ app.get('/api/notes', (req, res) =>
 
 
  app.delete('/api/notes/:id', (req, res) => {
-    const noteIndex = req.params.note_id;
+    const noteIndex = req.params.id;
+    console.log(req.params.note_id);
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+       if (err) throw err;
+       let deleteParsedNotes = JSON.parse(data);
+       
+       const noNotesArray = deleteParsedNotes.filter(note => {
+          return note.id !== noteIndex
+       });
+
+      
+       fs.writeFile('./db/db.json', JSON.stringify(noNotesArray), (err, data) => {
+          console.log("Note deleted!")
+          if (err) throw err;
+         //  res.json(noNotesArray);
+       });
+       res.json(noNotesArray);
+    })
 
    //use filter to make new array to filter out any note with matching id note_id
    // fs.readFile
